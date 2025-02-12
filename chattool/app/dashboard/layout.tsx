@@ -1,9 +1,10 @@
 "use client";
 
 import Header from "@/components/Header";
+import Sidebar from "@/components/Sidebar";
 import { NavigationProvider } from "@/lib/NavigationProvider";
 import { Authenticated } from "convex/react";
-import { Sidebar } from "lucide-react";
+
 
 export default function DashboardLayout({
     children,
