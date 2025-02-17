@@ -21,7 +21,7 @@ async function ChatPage({params}: ChatPageProps) {
     }
     const convex = getConvexClient();
 
-    const initialMessages = await convex.query(api.nessages.list, {chatId});
+    const initialMessages = await convex.query(api.messages.list, {chatId});
 
     return<div>ChatPage : {chatId} </div>
 }
