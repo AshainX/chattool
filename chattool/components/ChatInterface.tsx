@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Doc, Id } from "@/convex/_generated/dataModel";
 import { Button } from "@/components/ui/button";
-// import { ChatRequestBody, StreamMessageType } from "@/lib/types";
+import { ChatRequestBody, /*StreamMessageType*/ } from "@/lib/types";
 // import WelcomeMessage from "@/components/WelcomeMessage";
 // import { createSSEParser } from "@/lib/SSEParser";
 // import { MessageBubble } from "@/components/MessageBubble";
@@ -57,6 +57,44 @@ export default function ChatInterface({chatId, initialMessages}: ChatInterfacePr
         } as Doc<"messages">;
 
         setMessages((prev) => [...prev, optimisticUserMessage]);
+
+        let fullResponse = "";
+        
+        try {
+            const requestBody: ChatRequestBody = {
+                messages: messages.map((msg)=> ({
+                    role: msg.role,
+                    content: msg.content,
+
+                })),
+
+
+                newMessage: trimmedInput,
+                chatId,
+            };
+            //SSE stream
+            const response = await fetch("api/chat/stream", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(requestBody),
+
+        });
+
+        if (!response.ok) throw new Error(await response.text());
+        if (!response.body) throw new Error("no response body");
+
+        //handle stream
+
+        } catch (error) {
+            console.error("Error sending message", error);
+            setMessages((prev) =>   
+            prev.filter((msg) => msg._id !== optimisticUserMessage._id)
+            );
+
+            setStreamedResponse("Error sending message");
+        } finally {
+            setIsLoading(false);
+        }
     };
 
 
