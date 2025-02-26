@@ -331,7 +331,7 @@ import { ArrowRight } from "lucide-react";
 import { getConvexClient } from "@/lib/convex";
 import { api } from "@/convex/_generated/api";
 import { createSSEParser } from "@/lib/createSSEParser";
-import WelcomeMessage from "./WelcomeMessage";
+import WelcomeMessage from "@/components/WelcomeMessage";
 
 interface ChatInterfaceProps {
   chatId: Id<"chats">;
